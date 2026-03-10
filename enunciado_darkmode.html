@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enunciado IAED 2025/2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ── Reset & Base ─────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: rgba(28, 28, 30, 0.72);
+            --bg-card-hover: rgba(38, 38, 40, 0.85);
+            --bg-code: rgba(44, 44, 46, 0.6);
+            --bg-code-block: rgba(28, 28, 30, 0.9);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --text-primary: #f5f5f7;
+            --text-secondary: rgba(245, 245, 247, 0.7);
+            --text-tertiary: rgba(245, 245, 247, 0.5);
+            --accent-blue: #2997ff;
+            --accent-purple: #bf5af2;
+            --accent-teal: #64d2ff;
+            --accent-green: #30d158;
+            --accent-orange: #ff9f0a;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            --shadow-glow: 0 0 40px rgba(41, 151, 255, 0.08);
+            --transition-default: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-card-hover: rgba(255, 255, 255, 1);
+            --bg-code: rgba(0, 0, 0, 0.05);
+            --bg-code-block: #ffffff;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-medium: rgba(0, 0, 0, 0.15);
+            --text-primary: #1d1d1f;
+            --text-secondary: rgba(29, 29, 31, 0.75);
+            --text-tertiary: rgba(29, 29, 31, 0.55);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.05) inset;
+            --shadow-glow: 0 0 40px rgba(41, 151, 255, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.75;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* ── Background Gradient ──────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100vh;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(41, 151, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(191, 90, 242, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(100, 210, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        :root[data-theme="light"] body::before {
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(41, 151, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(191, 90, 242, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(100, 210, 255, 0.06) 0%, transparent 50%);
+        }
+
+        /* ── Theme Toggle Layer ───────────────────────────────── */
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: var(--text-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-default);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--border-medium);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sun-icon {
+            display: none;
+        }
+
+        .moon-icon {
+            display: block;
+        }
+
+        :root[data-theme="light"] .sun-icon {
+            display: block;
+        }
+
+        :root[data-theme="light"] .moon-icon {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* ── Main Container ───────────────────────────────────── */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 60px 40px 120px;
+            }
+        }
+
+        /* ── Hero Header ──────────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            margin-bottom: 48px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 0;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ── Date Badges ──────────────────────────────────────── */
+        .dates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 36px 0 16px;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: var(--radius-xl);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition-default);
+        }
+
+        .date-badge:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-medium);
+            transform: translateY(-1px);
+        }
+
+        .date-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .date-badge .dot.checkpoint {
+            background: var(--accent-orange);
+            box-shadow: 0 0 8px rgba(255, 159, 10, 0.4);
+        }
+
+        .date-badge .dot.entrega {
+            background: var(--accent-green);
+            box-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
+        }
+
+        .date-badge .dot.teste {
+            background: var(--accent-purple);
+            box-shadow: 0 0 8px rgba(191, 90, 242, 0.4);
+        }
+
+        /* ── Section Cards ────────────────────────────────────── */
+        .section {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 36px 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-default);
+        }
+
+        .section:hover {
+            border-color: var(--border-medium);
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+        }
+
+        @media (max-width: 600px) {
+            .section {
+                padding: 24px 18px;
+                border-radius: var(--radius-md);
+            }
+        }
+
+        /* ── Typography ───────────────────────────────────────── */
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 28px;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        em {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        u {
+            text-decoration: none;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-orange));
+            background-size: 100% 2px;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            padding-bottom: 2px;
+            color: var(--accent-orange);
+            font-weight: 500;
+        }
+
+        /* ── Links ────────────────────────────────────────────── */
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-default);
+            border-bottom: 1px solid transparent;
+        }
+
+        a:hover {
+            color: var(--accent-teal);
+            border-bottom-color: var(--accent-teal);
+        }
+
+        /* ── Table ────────────────────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(41, 151, 255, 0.12), rgba(191, 90, 242, 0.08));
+        }
+
+        th {
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-medium);
+            text-align: left;
+        }
+
+        th:first-child {
+            text-align: center;
+        }
+
+        td {
+            padding: 12px 18px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: var(--transition-default);
+        }
+
+        td:first-child {
+            text-align: center;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: var(--transition-default);
+        }
+
+        tbody tr:hover {
+            background: var(--border-subtle);
+        }
+
+        tbody tr:hover td {
+            color: var(--text-primary);
+        }
+
+        td strong {
+            font-family: var(--font-mono);
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 2px 8px;
+            background: rgba(41, 151, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        /* ── Code ─────────────────────────────────────────────── */
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--bg-code);
+            padding: 3px 7px;
+            border-radius: 6px;
+            color: var(--accent-teal);
+            border: 1px solid var(--border-subtle);
+            font-weight: 500;
+        }
+
+        :root[data-theme="light"] code {
+            color: #0b7bc1;
+        }
+
+        pre {
+            background: var(--bg-code-block);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            margin: 16px 0;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 14px;
+            display: flex;
+            gap: 6px;
+            width: 44px;
+            height: 12px;
+            background:
+                radial-gradient(circle at 6px 6px, #ff5f57 5px, transparent 5px),
+                radial-gradient(circle at 22px 6px, #febc2e 5px, transparent 5px),
+                radial-gradient(circle at 38px 6px, #28c840 5px, transparent 5px);
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            display: block;
+            padding-top: 20px;
+        }
+
+        /* ── Lists ────────────────────────────────────────────── */
+        ul,
+        ol {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        li::marker {
+            color: var(--accent-blue);
+        }
+
+        ul ul,
+        ul ol,
+        ol ul,
+        ol ol {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* ── Command Items ────────────────────────────────────── */
+        .command-block {
+            background: rgba(28, 28, 30, 0.5);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            margin: 16px 0;
+            transition: var(--transition-default);
+        }
+
+        .command-block:hover {
+            border-color: rgba(41, 151, 255, 0.2);
+            background: rgba(28, 28, 30, 0.7);
+        }
+
+        /* ── Figure / Image ───────────────────────────────────── */
+        figure {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-default);
+        }
+
+        figure img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        figcaption {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── LOG / Changelog Badge ────────────────────────────── */
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(48, 209, 88, 0.06);
+            border: 1px solid rgba(48, 209, 88, 0.15);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .log-entry .log-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            white-space: nowrap;
+        }
+
+        /* ── Important Notice ─────────────────────────────────── */
+        .notice {
+            background: linear-gradient(135deg, rgba(255, 159, 10, 0.08), rgba(255, 159, 10, 0.03));
+            border: 1px solid rgba(255, 159, 10, 0.2);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin: 20px 0;
+            color: var(--accent-orange);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .notice strong {
+            color: var(--accent-orange);
+        }
+
+        .notice code {
+            color: var(--accent-orange);
+            background: rgba(255, 159, 10, 0.1);
+            border-color: rgba(255, 159, 10, 0.2);
+        }
+
+        /* ── Library Notice ───────────────────────────────────── */
+        .lib-notice {
+            background: linear-gradient(135deg, rgba(41, 151, 255, 0.08), rgba(191, 90, 242, 0.05));
+            border: 1px solid rgba(41, 151, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .lib-notice code {
+            color: var(--accent-blue);
+            background: rgba(41, 151, 255, 0.1);
+            border-color: rgba(41, 151, 255, 0.15);
+        }
+
+        /* ── Scrollbar ────────────────────────────────────────── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── Selection ────────────────────────────────────────── */
+        ::selection {
+            background: rgba(41, 151, 255, 0.3);
+            color: var(--text-primary);
+        }
+
+        /* ── Fade-in animation ────────────────────────────────── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeUp 0.6s ease-out both;
+        }
+
+        .section:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .section:nth-child(3) {
+            animation-delay: 0.1s;
+        }
+
+        .section:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+
+        .section:nth-child(5) {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(6) {
+            animation-delay: 0.25s;
+        }
+
+        .section:nth-child(7) {
+            animation-delay: 0.3s;
+        }
+
+        .section:nth-child(8) {
+            animation-delay: 0.35s;
+        }
+
+        /* ── Footer ───────────────────────────────────────────── */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-medium), transparent);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Botão de Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar Tema">
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+
+    <div class="container">
+
+        <!-- ═══ Hero ═══ -->
+        <div class="hero">
+            <h1 id="enunciado-do-projecto---iaed-20252026">
+                Enunciado do Projecto<br>IAED 2025/2026
+            </h1>
+            <div class="dates">
+                <span class="date-badge"><span class="dot checkpoint"></span>Checkpoint: 18 Mar 2026, 19h59</span>
+                <span class="date-badge"><span class="dot entrega"></span>Entrega: 06 Abr 2026, 19h59</span>
+                <span class="date-badge"><span class="dot teste"></span>Teste Prático: 08 Abr 2026</span>
+            </div>
+        </div>
+
+        <!-- ═══ LOG ═══ -->
+        <div class="section">
+            <h2><span class="section-number">⟡</span> LOG alterações</h2>
+            <div class="log-entry">
+                <span class="log-date">7-mar-26</span>
+                <span>Publicação do enunciado.</span>
+            </div>
+        </div>
+
+        <!-- ═══ 1. Introdução ═══ -->
+        <div class="section">
+            <h2 id="introdução"><span class="section-number">1</span> Introdução</h2>
+            <p>
+                Pretende-se a construção de um sistema de facturação de produtos na
+                linguagem de programação <strong>C</strong>. Para tal, o sistema deverá
+                permitir a introdução e remoção tanto de produtos como de facturas. O
+                cliente vai colocando produtos num cesto/carrinho de compras para
+                posterior facturação. Uma factura é o resumo da quantidade de items
+                comprados e do seu custo total, associados a um cliente (NIF e nome).
+            </p>
+            <p>
+                A interacção com o programa deverá ocorrer através de um conjunto de
+                linhas compostas por uma letra (comando) e um número de argumentos
+                dependente do comando a executar. Pode assumir que todo o <em>input</em>
+                fornecido respeitará os tipos indicados, por exemplo, onde é esperado um
+                valor inteiro decimal nunca será introduzida uma letra. Os possíveis
+                comandos são listados na tabela seguinte e indicam as operações a executar.
+            </p>
+
+            <table>
+                <thead>
+                    <tr class="header">
+                        <th style="text-align: center;">Comando</th>
+                        <th style="text-align: left;">Acção</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>q</strong></td>
+                        <td>termina o programa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>p</strong></td>
+                        <td>introduz um novo produto no sistema</td>
+                    </tr>
+                    <tr>
+                        <td><strong>l</strong></td>
+                        <td>lista os produtos disponíveis no sistema</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a</strong></td>
+                        <td>adiciona ao cesto a quantidade do produto indicado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>r</strong></td>
+                        <td>resumo de facturação e existências</td>
+                    </tr>
+                    <tr>
+                        <td><strong>f</strong></td>
+                        <td>factura os produtos no cesto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>d</strong></td>
+                        <td>apaga o registo de produtos ou facturas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>c</strong></td>
+                        <td>lista as facturas de um cliente</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ═══ 2. Especificação ═══ -->
+        <div class="section">
+            <h2 id="especificação-do-problema"><span class="section-number">2</span> Especificação do problema</h2>
+            <p>
+                O objectivo do projecto é ter um sistema de facturação de produtos.
+                Para tal são introduzidos no sistema um conjunto de produtos. O sistema
+                gere o registo da facturação dos produtos aos clientes.
+            </p>
+            <figure>
+                <img alt="barcodes" src="https://i.imgur.com/7bMdPeI.png" />
+                <figcaption>barcodes</figcaption>
+            </figure>
+            <p>
+                Cada <strong>produto</strong> é caracterizado por uma descrição, um
+                código EAN-13 (ou EAN-8), um preço, uma classe de IVA (uma letra
+                maiúscula) e a quantidade de unidades em existência. Se já houver
+                produtos em armazém com o mesmo código EAN, as suas existências devem
+                ser incrementadas na quantidade indicada e os restante valores
+                actualizados. A designação do código EAN, EAN-8 ou EAN-13, é constituída
+                por <strong>8</strong> ou <strong>13</strong> digitos decimais, devendo
+                ser único no sistema. Os códigos EAN-13 são um número de 12 digitos
+                seguido de um dígito de verificação calculado a partir dos anteriores:
+                somar os dígitos nas posições pares (0, 2, 4, …) com os dígitos nas
+                posições ímpares (1, 3, 5, …) multiplicados por 3 (apenas os ímpares); o
+                dígito de verificação resultante é
+                <code>(10 - (soma % 10)) % 10</code>
+                e deve ser igual ao último dígito do código EAN-13. De forma similar
+                para o código EAN-8 usando respectivamente os digitos 0, 2, 4 e 6 e os
+                digitos 1, 3 e 5 para o cálculo do digito de verificação. A descrição de
+                um produto começa com uma letra maiúscula e tem um comprimento máximo de
+                <strong>50</strong> <em>bytes</em>. Notar que um carácter acentuado em
+                <em>utf-8</em> utiliza mais de um <em>byte</em>. Por exemplo
+                <code>Açúcar</code> tem 6 letras mas ocupa 8 <em>bytes</em>
+                (<code>char</code> em <strong>C</strong>).
+            </p>
+            <p>
+                Uma <strong>factura</strong> é apenas o resumo dos items comprados e
+                da informação do cliente, sendo caracterizada por uma quantidade de
+                produtos e respetivo valor total a facturar, além do NIF e nome do
+                cliente que adquire os produtos. Os produtos e respetivas quantidades
+                vão sendo adicionados a um cesto de compras sendo criada uma factura
+                quando o conteúdo do cesto é pago. O nome do cliente pode conter
+                caracteres brancos (espaços ou tabulador horizontal <code>\t</code>).
+                Neste caso, o nome do cliente é representado entre aspas. Caso não
+                contenha caracteres brancos, o nome do cliente pode ser delimitado por
+                aspas ou não. O nome do cliente nunca contém o carácter aspa na sua
+                descrição e começa sempre por uma letra (maiúscula ou minúscula). O nome
+                do cliente não tem comprimento máximo mas na maioria dos casos não
+                excede <strong>50</strong> <em>bytes</em>. Todos os valores monetários
+                são impressos com duas casas decimais. O NIF é um número inteiro com 9
+                digitos decimais.
+            </p>
+            <p>
+                Podem existir no máximo <strong>10000</strong> produtos registados
+                para facturação em cada instante. Não existem limites no número de
+                produtos por factura, número de resumos de facturas guardadas nem no
+                comprimento do nome do cliente, logo deve procurar utilizar a memória
+                estritamente necessária. Não podem existir variáveis globais. Para
+                facilitar a introdução dos dados, pode assumir que cada instrução não
+                excede 65535 caracteres (64K bytes). Se a memória se esgotar, o programa
+                deve terminar de forma controlada, imprimindo a mensagem
+                <code>No memory.</code> Antes de terminar, o programa deve libertar toda
+                a memória reservada dinamicamente.
+            </p>
+            <p>
+                Deve ser possível invocar o programa com um argumento que designa o
+                nome de um ficheiro de códigos e valores de IVA. O ficheiro é
+                constituído por uma entrada por linha, sendo cada entrada composta de um
+                letra maiúscula e um valor inteiro que representa a percentagem de IVA a
+                aplicar na venda do produto, separados por um só espaço branco. Por
+                exemplo, uma entrada pode ser <strong>D 23</strong>. Caso não seja
+                indicado o ficheiro de IVA nos argumentos do programa, os valores a usar
+                deve ser <strong>A 0</strong>, <strong>B 6</strong>, <strong>C 13</strong>,
+                <strong>D 23</strong>. Podem existir, no máximo 26 códigos
+                de IVA, podendo as letras não ser consecutivas. Depois de aplicado o IVA
+                o valor resultante deve ter arredondamento simétrico aos cêntimos:
+                0.00499999 arredonda para zero e 0.0050000 arredonda para um (cêntimo).
+            </p>
+        </div>
+
+        <!-- ═══ 3. Dados de Entrada ═══ -->
+        <div class="section">
+            <h2 id="dados-de-entrada"><span class="section-number">3</span> Dados de Entrada</h2>
+            <p>
+                Durante a execução do programa as instruções devem ser lidas do
+                terminal (<em>standard input</em>) na forma de um conjunto de linhas
+                iniciadas por um carácter, que se passa a designar por comando, seguido
+                de um número de informações dependente do comando a executar; o comando
+                e cada uma das informações são separados por pelo menos um carácter branco.
+            </p>
+            <p>
+                Os comandos disponíveis são descritos de seguida. Os caracteres
+                <code>&lt;</code> e <code>&gt;</code> são utilizados apenas na descrição
+                dos comandos para indicar os parâmetros. Os parâmetros opcionais estão
+                indicados entre caracteres <code>[</code> e <code>]</code>. As
+                repetições estão indicadas entre caracteres <code>{</code> e <code>}</code>.
+                Cada comando tem sempre todos os parâmetros necessários à sua correcta
+                execução.
+            </p>
+            <p>
+                Cada comando indica uma determinada acção que se passa a caracterizar
+                em termos de formato de entrada, formato de saída e erros a retornar.
+            </p>
+
+            <div class="notice">
+                <u>Se o comando puder gerar mais de um erro, deverá ser indicado apenas o primeiro.</u>
+            </div>
+
+            <ul>
+                <li>
+                    <strong>q</strong> - termina o programa:
+                    <ul>
+                        <li>Formato de entrada: <code>q</code></li>
+                        <li>Formato de saída: NADA</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>p</strong> - introduz no sistema ou actualiza um novo produto:
+                    <ul>
+                        <li>Formato de entrada:
+                            <code>p &lt;ean&gt; &lt;iva&gt; &lt;preço&gt; &lt;quantidade&gt; &lt;descrição&gt;</code>
+                        </li>
+                        <li>Formato de saída: <code>&lt;stock&gt;</code>, quantidade de produto resultante.</li>
+                        <li>Erros:
+                            <ul>
+                                <li><code>invalid ean</code> no caso de o dígito de verificação EAN estar errado.</li>
+                                <li><code>invalid iva</code> no caso de não existir um código IVA com a designação.</li>
+                                <li><code>invalid price</code> no caso de preço não ser um número positivo.</li>
+                                <li><code>invalid quantity</code> no caso de a quantidade ser um número negativo.</li>
+                                <li><code>invalid description</code> no caso de a descrição exceder a dimensão máxima.
+                                </li>
+                                <li><code>product in use</code> no caso de se tentar alterar o preço de um produto que
+                                    esteja incluído no cesto.</li>
+                                <li><code>invalid product</code> no caso de o número indicado exceder o número de
+                                    produtos registáveis</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>l</strong> - lista produtos:
+                    <ul>
+                        <li>
+                            <p>Formato de entrada: <code>l [ &lt;wildcard&gt; { &lt;wildcard&gt; } ]</code></p>
+                        </li>
+                        <li>
+                            <p>Formato de saída: Imprime informação de cada produto com o formato
+                                <code>&lt;ean&gt; &lt;iva&gt; &lt;preço&gt; &lt;quantidade-vendida&gt; &lt;quantidade-disponível&gt; &lt;descrição&gt;</code>
+                            </p>
+                            <p>Imprime todos os produtos disponíveis, ie, com o <code>stock &gt; 0</code>,
+                                por ordem de criação, caso seja invocado sem argumentos ou com o wildcard
+                                <code>*</code>. Em qualquer outro caso, imprime os produtos disponíveis cujos
+                                códigos EAN são indicados pela ordem que são indicados nos argumentos e,
+                                para cada um dos argumentos, pela ordem de criação.
+                            </p>
+                            <p>Na descrição dos códigos EAN podem ser utilizados os <em>wildcards</em>
+                                <code>*</code> e <code>?</code> representando qualquer sequência de caracteres
+                                ou um caráter, respetivamente. Por exemplo, <code>560*</code>,
+                                <code>560*23*1</code>, <code>560?????7159?</code> ou <code>560100994331?</code>.
+                                Assim, <code>1*23</code> reconhece a sequência <code>19865423</code> tal como
+                                a sequência <code>1232323232323</code>, mas não a sequência <code>14233333</code>
+                                ou <code>88765123</code>.
+                            </p>
+                        </li>
+                        <li>
+                            <p>Erros:</p>
+                            <ul>
+                                <li><code>&lt;widlcard&gt;: no such product</code> no caso de não existir nenhum produto
+                                    com o *wildcard* indicado.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>a</strong> - adiciona ao cesto a quantidade do produto indicado:
+                    <ul>
+                        <li>
+                            <p>Formato de entrada: <code>a [ [ &lt;quantidade&gt; ] &lt;ean&gt; ]</code></p>
+                        </li>
+                        <li>
+                            <p>Formato de saída: Imprime a informação do produto com o formato
+                                <code>&lt;iva&gt; &lt;preço-unitário&gt; &lt;quantidade-total&gt; &lt;preço-total-com-iva&gt; &lt;descrição&gt;</code>
+                            </p>
+                            <p>O cesto está inicialmente vazio, sem produtos. O stock do produto
+                                adicionado deve ser actualizado em conformidade e produtos em rutura de
+                                stock não são removidos do sistema.</p>
+                            <ul>
+                                <li>Caso a <code>&lt;quantidade&gt;</code> seja omitida deve ser considerada uma
+                                    unidade.</li>
+                                <li>Caso a <code>&lt;quantidade&gt;</code> seja negativa deve ser removido o número de
+                                    unidades do produtos indicado do cesto.</li>
+                                <li>Após uma adição/remoção o produto deverá ser sempre listado independentemente do
+                                    número de unidades resultante.</li>
+                                <li>Caso seja invocado sem argumentos é impressa a listagem dos produtos adicionados por
+                                    ordem crescente de código EAN, sem produtos duplicados. Os produtos cuja quantidade
+                                    seja nula não devem ser apresentados na listagem.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p>Erros:</p>
+                            <ul>
+                                <li><code>invalid ean</code> no caso de o dígito de verificação EAN estar errado.</li>
+                                <li><code>invalid quantity</code> no caso de a quantidade ser negativa e não existirem
+                                    unidades suficientes do produto no cesto.</li>
+                                <li><code>&lt;ean&gt;: no such product</code> no caso de não existir nenhum produto com
+                                    o <code>&lt;ean&gt;</code> indicado.</li>
+                                <li><code>no stock</code> no caso de não existir quantidade disponível.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>r</strong> - resumo de facturação:
+                    <ul>
+                        <li>Formato de entrada: <code>r [ &lt;ean&gt; ]</code></li>
+                        <li>Formato de saída:
+                            <ul>
+                                <li><code>&lt;quantidade-disponível&gt; &lt;quantidade-vendida&gt; &lt;descrição&gt;</code>
+                                    se for invocado com um argumento.</li>
+                                <li><code>&lt;número-total-de-items-comprados&gt; &lt;número-total-de-facturas-emitidas&gt; &lt;valor-total-facturado&gt;</code>
+                                    se for invocado sem argumentos. Neste caso deverá seguir-se a tabela de IVA por
+                                    ordem alfabética do código e com <code>%</code> no valor, uma entrada por linha.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Erros:
+                            <ul>
+                                <li><code>invalid ean</code> no caso de o dígito de verificação EAN estar errado.</li>
+                                <li><code>&lt;ean&gt;: no such product</code> no caso de não existir nenhum produto com
+                                    o <code>&lt;ean&gt;</code> indicado.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>f</strong> - factura os produtos no cesto:
+                    <ul>
+                        <li>Formato de entrada: <code>f [ [ &lt;nif&gt; ] &lt;nome-cliente&gt; ]</code></li>
+                        <li>Formato de saída:
+                            <code>&lt;número-de-produtos&gt; &lt;valor-pago&gt; &lt;número-de-factura&gt;</code>.
+                            <ul>
+                                <li>Caso o NIF seja omitido o valor registado deve ser <code>999999999</code>.</li>
+                                <li>Caso o <code>&lt;nome-cliente&gt;</code> seja omitido deve ser registado o nome
+                                    <code>Cliente final</code>.</li>
+                                <li>Caso o nome de cliente seja <code>error</code> todos os produtos são devolvidos e
+                                    não é emitida factura.</li>
+                                <li>As facturas são numeradas sequencialmente a partir de <code>1</code>, não havendo
+                                    reutilização de números mesmo se entretanto apagadas.</li>
+                                <li>Após a facturação sem erros, o cesto fica novamente vazio, sem produtos.</li>
+                            </ul>
+                        </li>
+                        <li>Erros:
+                            <ul>
+                                <li><code>&lt;nif&gt;: no such nif</code> no caso de não ser um NIF válido.</li>
+                                <li><code>invalid name</code> no caso de não ser um nome de cliente válido.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>c</strong> - lista as facturas do sistema:
+                    <ul>
+                        <li>Formato de entrada: <code>c [ &lt;nome-cliente&gt; ]</code></li>
+                        <li>Formato de saída:
+                            <ul>
+                                <li><code>&lt;número-factura&gt; &lt;valor-facturado&gt; &lt;nome-cliente&gt;</code> se
+                                    for invocado sem argumentos. A lista é apresentada por ordem alfabética de nome de
+                                    cliente e por ordem cronológica de facturação para um mesmo cliente.</li>
+                                <li>se for invocado com um argumento, imprime todas as facturas do cliente indicado
+                                    existentes no sistema, por ordem cronológica de facturação.</li>
+                            </ul>
+                        </li>
+                        <li>Erros:
+                            <ul>
+                                <li><code>invalid name</code> no caso de não ser um nome de cliente válido.</li>
+                                <li><code>&lt;nome-do-cliente&gt;: no such client</code> no caso de não existir nenhuma
+                                    factura associada ao cliente indicado.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>d</strong> - apaga o registo de um produto ou factura:
+                    <ul>
+                        <li>Formato de entrada: <code>d &lt;número&gt; [ &lt;quantidade&gt; ]</code></li>
+                        <li>Formato de saída:
+                            <ul>
+                                <li><code>&lt;valor-pago&gt; &lt;nif&gt; &lt;nome-cliente&gt;</code> se for invocado com
+                                    um só argumento, a factura com o <code>&lt;número&gt;</code> indicado é removida mas
+                                    os items comprados não são repostos.</li>
+                                <li><code>&lt;quantidade-restante&gt; &lt;descrição&gt;</code> se for invocado com dois
+                                    argumentos, o <code>&lt;número&gt;</code> do código EAN e a quantidade. Neste caso a
+                                    <code>&lt;quantidade&gt;</code> é retirada da quantidade disponível do produto,
+                                    devendo esta ser um número positivo. Se não restar quantidade disponível do produto,
+                                    este deve ser removido dos produtos registados.</li>
+                            </ul>
+                        </li>
+                        <li>Erros:
+                            <ul>
+                                <li><code>&lt;número&gt;: no such invoice</code> no caso não existir uma factura com o
+                                    número indicado.</li>
+                                <li><code>invalid ean</code> no caso de o dígito de verificação EAN estar errado.</li>
+                                <li><code>&lt;ean&gt;: no such product</code> no caso de não existir nenhum produto com
+                                    o <code>&lt;ean&gt;</code> indicado.</li>
+                                <li><code>product in use</code> no caso de se tentar apagar um produto que esteja
+                                    incluído no cesto.</li>
+                                <li><code>invalid quantity</code> no caso da quantidade não ser um número positivo ou a
+                                    quantidade exceder o stock.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="lib-notice">
+                <p><strong>Só poderá usar as funções de biblioteca definidas em
+                        <code>stdio.h</code>, <code>stdlib.h</code>, <code>ctype.h</code> e
+                        <code>string.h</code></strong>
+                </p>
+            </div>
+
+            <div class="notice">
+                <p><em>Nota importante</em>: não é permitida a utilização da instrução
+                    <code>goto</code>, da declaração <code>extern</code>, nem da função
+                    <code>qsort</code> nativa do C e nenhum destes <em>nomes</em> deve
+                    aparecer no vosso código.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══ Exemplos ═══ -->
+        <div class="section">
+            <h2 id="exemplos-de-utilização-dos-comandos"><span class="section-number">⌘</span> Exemplos de utilização
+                dos comandos</h2>
+
+            <h3 id="comando-p"><strong>Comando <code>p</code></strong></h3>
+            <p>O comando <code>p</code> permite introduzir no sistema um novo produto ou actualizar as caraterísticas de
+                um produto existente.</p>
+            <pre class="text"><code>p 8700216266628 D 7.94 100 CHAMPO H&amp;S CLASSIC 625ML</code></pre>
+
+            <h3 id="comando-l"><strong>Comando <code>l</code></strong></h3>
+            <p>O comando <code>l</code> sem argumentos permite listar todas os produtos existentes no sistema.</p>
+            <pre class="text"><code>l</code></pre>
+            <p>O comando <code>l</code> com argumentos permite listar apenas os produtos cujos códigos EAN são
+                indicados.</p>
+            <pre class="text"><code>l 5601009* 560131210104? 8700216266628</code></pre>
+
+            <h3 id="comando-a"><strong>Comando <code>a</code></strong></h3>
+            <p>O comando <code>a</code> permite adicionar produtos ao cesto de compras.</p>
+            <pre class="text"><code>a 3 5601009993352</code></pre>
+
+            <h3 id="comando-r"><strong>Comando <code>r</code></strong></h3>
+            <p>O comando <code>r</code> permite imprimir o resumo de facturação</p>
+            <pre class="text"><code>r</code></pre>
+            <p>ou o resumo de facturação de um produto específico</p>
+            <pre class="text"><code>r 8700216266628</code></pre>
+
+            <h3 id="comando-f"><strong>Comando <code>f</code></strong></h3>
+            <p>O comando <code>f</code> permite facturar os produtos adicionados ao cesto de compras.</p>
+            <pre class="text"><code>f "Cliente final"</code></pre>
+            <p>ou indicar o NIF do cliente</p>
+            <pre class="text"><code>f 234567890 João</code></pre>
+
+            <h3 id="comando-c"><strong>Comando <code>c</code></strong></h3>
+            <p>O comando <code>c</code> sem argumentos permite listar todas as facturas existentes no sistema.</p>
+            <pre class="text"><code>c</code></pre>
+            <p>O comando <code>c</code> com um argumento permite listar todas as facturas existentes no sistema do
+                cliente indicado.</p>
+            <pre class="text"><code>c Xico
+c "João Miguel"</code></pre>
+
+            <h3 id="comando-d"><strong>Comando <code>d</code></strong></h3>
+            <p>O comando <code>d</code> com um argumento permite apagar uma factura.</p>
+            <pre class="text"><code>d 12</code></pre>
+            <p>O comando <code>d</code> com dois argumentos permite reduzir as existências, ou mesmo apagar, um produto.
+            </p>
+            <pre class="text"><code>d 8700216266628 21</code></pre>
+        </div>
+
+        <!-- ═══ 4. Compilação ═══ -->
+        <div class="section">
+            <h2 id="compilação-e-teste"><span class="section-number">4</span> Compilação e teste</h2>
+            <p>O compilador a utilizar é o <code>gcc</code> com as seguintes opções de compilação:
+                <code>-O3 -Wall -Wextra -Werror -Wno-unused-result</code>. Para compilar o programa deve executar o
+                seguinte comando:
+            </p>
+            <pre class="text"><code>  $ gcc -O3 -Wall -Wextra -Werror -Wno-unused-result -o proj *.c</code></pre>
+            <p>O programa deverá escrever no <em>standard output</em> as respostas aos comandos apresentados no
+                <em>standard input</em>. As respostas são igualmente linhas de texto formatadas conforme definido
+                anteriormente neste enunciado. Tenha em atenção ao número de espaços entre elementos do seu output,
+                assim como a ausência de espaços no final de cada linha. Procure respeitar escrupulosamente as
+                indicações dadas.</p>
+            <p>Ver os exemplos de input e respectivos output na pasta <code>public-tests/</code>.</p>
+            <p>O programa deve ser executado da forma seguinte:</p>
+            <pre class="text"><code>  $ ./proj &lt; test.in &gt; test.myout</code></pre>
+            <p>Posteriormente poderá comparar o seu output (<code>*.myout</code>) com o output previsto
+                (<code>*.out</code>) usando o comando <code>diff</code>,</p>
+            <pre class="text"><code>  $ diff test.out test.myout</code></pre>
+            <p>Para testar o seu programa poderá executar os passos indicados acima ou usar o comando <code>make</code>
+                na pasta <code>public-tests/</code>.</p>
+            <p>Para utilizar o <em>valgrind</em> ou um debugger (<em>gdb</em>, <em>ddd</em>, …) deverá substituir a
+                opção de compilação <code>-O3</code> por <code>-g</code>.</p>
+        </div>
+
+        <!-- ═══ 5. Entrega ═══ -->
+        <div class="section">
+            <h2 id="entrega-do-projeto"><span class="section-number">5</span> Entrega do Projeto</h2>
+            <p>Será criado um repositório <code>git</code> para cada aluno desenvolver e submeter o projeto. Este
+                repositório será criado no
+                <a href="https://gitlab.rnl.tecnico.ulisboa.pt">GitLab da RNL</a> e será activado quando da publicação
+                deste enunciado.
+            </p>
+            <p>Na sua submissão do projeto deve considerar os seguinte pontos:</p>
+            <ul>
+                <li>
+                    <p>Considera-se que os seus ficheiros de desenvolvimento do projeto
+                        (<code>.c</code> e <code>.h</code>) estão na raiz do repositório e não
+                        numa directoria. <em>Qualquer ficheiro fora da raíz não será considerado
+                            como pertencendo ao seu projeto</em>.</p>
+                </li>
+                <li>
+                    <p>A última versão que estiver no repositório da RNL será considerada a
+                        submissão para avaliação do projeto. Qualquer versão anterior ou que
+                        não esteja no repositório não será considerada na avaliação.</p>
+                </li>
+                <li>
+                    <p>Antes de fazer qualquer submissão para o repositório da RNL, não se
+                        esqueça que deve sempre fazer <code>pull</code> para sincronizar o seu
+                        repositório local.</p>
+                </li>
+                <li>
+                    <p>Quando actualizar os ficheiros <code>.c</code> e <code>.h</code> no
+                        seu repositório na RNL, esta versão será avaliada e será informado se
+                        essa versão apresenta a resposta esperada num conjunto de casos de
+                        teste. Tal como no repositório dos laboratórios, o resultado da
+                        avaliação automática será colocado no repositório do aluno.</p>
+                </li>
+                <li>
+                    <p>Para que o sistema de avaliação seja executado, tem que esperar pelo
+                        menos 10 minutos. Sempre que fizer uma actualização no repositório,
+                        começa um novo período de espera de 10 minutos. Exemplos de casos de
+                        teste serão oportunamente fornecidos.</p>
+                </li>
+                <li>
+                    <p>Data do checkpoint: <strong>18 de março de 2026, às 19h59m</strong>.
+                        Até à data limite poderá efectuar o número de submissões que desejar,
+                        sendo utilizada para efeitos de avaliação a última versão. Deverá
+                        portanto verificar cuidadosamente que a última versão no repositório
+                        GitLab da RNL corresponde à versão do projeto que pretende que seja
+                        avaliada. Não existirão excepções a esta regra.</p>
+                </li>
+                <li>
+                    <p>Data limite de entrega do projeto: <strong>6 de abril de 2026, às 19h59m</strong>.
+                        Aplicam-se as mesmas regras que para o checkpoint.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ═══ 6. Avaliação ═══ -->
+        <div class="section">
+            <h2 id="avaliação-do-projeto"><span class="section-number">6</span> Avaliação do Projeto</h2>
+            <p>Na avaliação do projeto serão consideradas as seguintes componentes:</p>
+            <ol type="1">
+                <li>A primeira componente será feita automaticamente e avalia o desempenho
+                    da funcionalidade do programa realizado. Esta componente é avaliada entre
+                    0 e 16 valores. Na data do checkpoint o projeto deverá passar a metade
+                    dos testes. Na entrega final poderá recuperar metade da cotação dos não
+                    passados no checkpoint. Assim, por exemplo,</li>
+            </ol>
+            <ul>
+                <li>se no checkpoint passar a 10% dos testes e na entrega final a 70% dos testes, então serão
+                    contabilizados 10% (checkpoint) + 50% (entrega final) + (70% - 50% - 10%) / 2 = 65%</li>
+                <li>se no checkpoint passar a 10% dos testes e na entrega final passar a apenas 55% dos testes, então
+                    serão contabilizados 10% (checkpoint) + 45% (entrega final) = 55%</li>
+                <li>caso não passe a nenhum teste no checkpoint e a todos os testes na entrega final, então serão
+                    contabilizados 0% (checkpoint) + 50% (entrega final) + (100 - 50%) / 2 = 75%.</li>
+                <li>caso passe a todos os testes no checkpoint tem a cotação total (100%).</li>
+            </ul>
+            <ol start="2" type="1">
+                <li>
+                    <p>A segunda componente avalia a qualidade do código entregue, nomeadamente
+                        os seguintes aspectos: comentários, indentação, alocação dinâmica de
+                        memória, estruturação, modularidade e divisão em ficheiros, abstracção de
+                        dados, entre outros. Esta componente poderá variar entre -4 valores e +4
+                        valores relativamente à classificação calculada no item anterior e será
+                        atribuída posteriormente. Algumas <em>guidelines</em> sobre este tópico
+                        podem ser encontradas em
+                        <a
+                            href="https://fenix.tecnico.ulisboa.pt/downloadFile/845043405703336/guidelines.html">guidelines.html</a>.
+                        Esta componente apenas é avaliada na entrega final.
+                    </p>
+                </li>
+                <li>
+                    <p>Na segunda componente serão utilizadas as ferramentas <em>lizard</em>,
+                        <em>valgrind</em>, e a opção <em>-fsanitize</em> do <em>gcc</em> por
+                        forma a detectar a complexidade de código, fugas de memória ("memory leaks")
+                        ou outras incorrecções no código, que serão penalizadas. Aconselha-se que
+                        utilizem estas ferramentas para fazer debugging do código e corrigir
+                        eventuais incorrecções, antes da submissão do projecto. Algumas dicas para
+                        debugging podem ser encontradas em
+                        <a
+                            href="https://fenix.tecnico.ulisboa.pt/downloadFile/845043405703334/debugging.html">debugging.html</a>.
+                    </p>
+                </li>
+            </ol>
+            <ul>
+                <li>
+                    <p>A classificação da primeira componente da avaliação do projeto é obtida
+                        através da execução automática de um conjunto de testes num computador com
+                        o sistema operativo GNU/Linux. Torna-se portanto essencial que o código
+                        compile correctamente e que respeite o formato de entrada e saída dos dados
+                        descrito anteriormente. Projetos que não obedeçam ao formato indicado no
+                        enunciado serão penalizados na avaliação automática, podendo, no limite,
+                        ter 0 (zero) valores se falharem todos os testes. Os testes considerados
+                        para efeitos de avaliação poderão incluir (ou não) os disponibilizados na
+                        página da disciplina, além de um conjunto de testes adicionais. A execução
+                        de cada programa em cada teste é limitada na quantidade de memória que pode
+                        utilizar, e no tempo total disponível para execução, sendo o tempo limite
+                        distinto para cada teste.</p>
+                </li>
+                <li>
+                    <p>Note-se que o facto de um projeto passar com sucesso o conjunto de testes
+                        disponibilizado na página da disciplina não implica que esse projeto esteja
+                        totalmente correcto. Apenas indica que passou alguns testes com sucesso,
+                        mas este conjunto de testes não é exaustivo. É da responsabilidade dos
+                        alunos garantir que o código produzido está correcto.</p>
+                </li>
+                <li>
+                    <p>Em caso algum será disponibilizado qualquer tipo de informação sobre os
+                        casos de teste utilizados pelo sistema de avaliação automática. A totalidade
+                        dos ficheiros de teste usados na avaliação do projeto serão disponibilizados
+                        na página da disciplina após a data de entrega.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ═══ Footer ═══ -->
+        <div class="footer">
+            IAED 2025/2026 · Instituto Superior Técnico
+        </div>
+
+    </div><!-- .container -->
+
+    <!-- Script do Theme Toggle -->
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const htmlEl = document.documentElement;
+
+        // Recuperar preferência do usuário ou do sistema
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            htmlEl.setAttribute('data-theme', savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            htmlEl.setAttribute('data-theme', 'light');
+        }
+
+        // Alternar tema ao clicar
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlEl.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlEl.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+
+</html>
