@@ -11,22 +11,26 @@
 #define PRODUCT_IN_USE "product in use"
 #define INVALID_PRODUCT "invalid product"
 #define INVALID_QUANTITY "invalid quantity"
-#define INVALID_DESCRIPTION "invalid description"
 
 typedef struct {
-    char description[MAXBUFF];
+    char description[51];
     char EAN[EAN_DIGITS];
     float price;
     char IVA;
     int stock;
-} product;
+} prod;
 
 typedef struct {
-    product bought_product;
+    prod bought_product;
     short total_value;
     short NIF[NIF_LENGTH];
-    char clients_name[];
+    char clients_name;
 } bill;
+
+typedef struct {
+    char IVA_LETTER;
+    int IVA_PERCENTAGE;
+} IVA;
 
 typedef struct {
     short quantity;
@@ -34,6 +38,10 @@ typedef struct {
 } basket;
 
 typedef struct {
-    product Product[MAXPRODUCTS];
-    bill user_bills[MAXPRODUCTS];
-} System;
+    prod Product;
+    int sold;
+} SysP;
+
+typedef struct {
+    bill Bills;
+} System_Bills;
