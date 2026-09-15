@@ -1,12 +1,28 @@
-# ProjetoIAED-26
-Projeto de IAED-26
+# Logistics Billing Engine
 
--> Objetivo:
-- Fazer Sistema de Logística e Faturação;
+Command-line invoicing and inventory management system developed in C as a university project.
 
--> Nota Final: 17.8
--> Nota Teste Prático: 16
--> Nota Final Projeto + Teste Pratico -> 16.9487
-# Como correr testes
+**Grade:** 17.8 / 20
 
-- Abrir pasta no terminal e fazer o comando make
+## Features
+
+* Product and inventory management
+* Transaction and invoice tracking
+* EAN validation
+* In-memory data structures
+* Custom memory management
+
+The system supports **10,000+ product records** and was tested with Valgrind to achieve **0 errors and 0 memory leaks**.
+
+## Technologies
+
+* C
+* Make
+* Valgrind
+
+## Running
+
+```bash
+gcc -O3 -Wall -Wextra -Werror -Wno-unused-result -o proj *.c
+make timed
+```
